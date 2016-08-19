@@ -1,9 +1,8 @@
 (function() {
   function Emitter(obj) {
     if (obj) return mixin(obj);
-  };
-
-  /**
+  }
+    /**
    * Mixin the emitter properties.
    *
    * @param {Object} obj
@@ -154,7 +153,6 @@
   var JS_WS_CLIENT_VERSION = '0.0.1';
 
   var Protocol = window.Protocol;
-  var protobuf = window.protobuf;
   var decodeIO_encoder = null;
   var decodeIO_decoder = null;
   var Package = Protocol.Package;
@@ -242,7 +240,7 @@
       var data = {
         rsa_n: rsa.n.toString(16),
         rsa_e: rsa.e
-      }
+      };
       handshakeBuffer.sys.rsa = data;
     }
     handshakeCallback = params.handshakeCallback;
@@ -250,7 +248,6 @@
   };
 
   var defaultDecode = starx.decode = function(data) {
-    //probuff decode
     var msg = Message.decode(data);
 
     if(msg.id > 0){
@@ -268,10 +265,7 @@
   var defaultEncode = starx.encode = function(reqId, route, msg) {
     var type = reqId ? Message.TYPE_REQUEST : Message.TYPE_NOTIFY;
 
-    //compress message by protobuf
-    if(protobuf && clientProtos[route]) {
-      msg = protobuf.encode(route, msg);
-    } else if(decodeIO_encoder && decodeIO_encoder.lookup(route)) {
+    if(decodeIO_encoder && decodeIO_encoder.lookup(route)) {
       var Builder = decodeIO_encoder.build(route);
       msg = new Builder(msg).encodeNB();
     } else {
@@ -316,7 +310,7 @@
     var onclose = function(event) {
       starx.emit('close',event);
       starx.emit('disconnect', event);
-      console.error('socket close: ', event);
+      console.log('socket close: ', event);
       if(!!params.reconnect && reconnectAttempts < maxReconnectAttempts) {
         reconnect = true;
         reconnectAttempts++;
@@ -507,7 +501,7 @@
     }
 
     cb(msg.body);
-    return;
+
   };
 
   var processMessageBatch = function(starx, msgs) {
