@@ -297,7 +297,7 @@
       send(obj);
     };
     var onmessage = function(event) {
-      processPackage(Package.decode(Protocol.strencode(event.data)), cb);
+      processPackage(Package.decode(event.data), cb);
       // new package arrived, update the heartbeat timeout
       if(heartbeatTimeout) {
         nextHeartbeatTimeout = Date.now() + heartbeatTimeout;
